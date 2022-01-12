@@ -49,7 +49,7 @@ namespace GuestBook.Controllers
             if (rec != null)
             {
                 Session["email"] = rec.email;
-                return RedirectToAction("ViewMessages", "messages");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -65,6 +65,10 @@ namespace GuestBook.Controllers
             return RedirectToAction("Login");
         }
        
+        public ActionResult Index()
+        {
+            return View();
+        }
 
     }
 }
