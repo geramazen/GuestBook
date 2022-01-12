@@ -48,7 +48,8 @@ namespace GuestBook.Controllers
             var rec = db.users.Where(x => x.email == user.email && x.password == user.password).ToList().FirstOrDefault();
             if (rec != null)
             {
-                Session["email"] = rec.email;
+                Session["email"] = rec.email; //This session will be used to know if the user is logged in or not
+                Session["User ID"] = rec.UID;
                 return RedirectToAction("Index");
             }
             else

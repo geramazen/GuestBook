@@ -16,23 +16,28 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("GuestBook", "Index", "users", new { area = "" }, new { @class = "navbar-brand" })
+             @Html.ActionLink("GuestBook", "Index", "users", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "users")</li>
+                    @if (Session["email"]!= null) //Only logged in User can see the message
+            {
+                <li>@Html.ActionLink("Messages", "Index", "messages")</li>
+            }
                     </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    @if (Session["email"] == null)
-                    {
+                @*in this part we use the email session in user controller(login function) to let the user login , Registar and logout.*@ 
+            <ul class="nav navbar-nav navbar-right">
+                @if (Session["email"] == null)
+                {
                     <li>@Html.ActionLink("Login", "Login", "users")</li>
-                    }
-                    @if (Session["email"] != null)
-                    {
+                    <li>@Html.ActionLink("Registar", "Registar", "users")</li>
+                }
+                @if (Session["email"] != null)
+                {
                     <li>@Html.ActionLink("Logout", "Logout", "users")</li>
-                    }
-                </ul>
+                }
+            </ul>
             </div>
         </div>
     </div>

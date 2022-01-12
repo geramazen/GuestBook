@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GuestBook.Models.message>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Messages</h2>
+
+<p>
+    @Html.ActionLink("Add New Message", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Message Content
+        </th>
+      
+        <th>
+            @Html.DisplayNameFor(model => model.user.email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.email)
+        </td>
+        <td>
+            @if (item.UID == Convert.ToInt32(Session["User ID"])) // Only The user who wrote the message can delete and edit it
+            {
+                @Html.ActionLink("Delete |", "Delete", new { id = item.MID}) 
+                
+                @Html.ActionLink(" Edit", "Edit", new { id = item.MID})
+            } |
+            @Html.ActionLink("Details", "Details", new { id = item.MID })|
+
+        </td>
+    </tr>
+}
+
+</table>
