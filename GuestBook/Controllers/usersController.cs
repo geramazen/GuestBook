@@ -25,7 +25,7 @@ namespace GuestBook.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Registar")]
-        public ActionResult Registar_Post([Bind(Include = "email,password")] user user)
+        public ActionResult Registar_Post([Bind(Include = "email,UserName,password")] user user)
         {
             if (ModelState.IsValid)
             {
@@ -48,8 +48,8 @@ namespace GuestBook.Controllers
             var rec = db.users.Where(x => x.email == user.email && x.password == user.password).ToList().FirstOrDefault();
             if (rec != null)
             {
-                Session["email"] = rec.email; //This session will be used to know if the user is logged in or not
-                Session["User ID"] = rec.UID;
+                Session["UserName"] = rec.UserName; //This session will be used to know if the user is logged in or not
+                Session["User ID"] = rec.UID; //This session Will be used to allow the user edit and delete only the messages that carry his ID.
                 return RedirectToAction("Index");
             }
             else
@@ -62,7 +62,7 @@ namespace GuestBook.Controllers
 
         public ActionResult Logout()
         {
-            Session["email"] = null;
+            Session["UserName"] = null;
             return RedirectToAction("Login");
         }
        

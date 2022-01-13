@@ -4,19 +4,30 @@
     ViewBag.Title = "Index";
 }
 
-<h2>All Messages</h2>
-
+<h2><span class="glyphicon glyphicon-envelope"></span> All Messages</h2>
+@if (Session["UserName"] != null)
+{
 <p>
-    @Html.ActionLink("Add New Message", "Create")
+    <a href="@Url.Action("Create", "messages")" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> Add New Message</a>
 </p>
-<table class="table">
+}
+<table class="table table-striped">
     <tr>
+        <th>
+            Message Number
+        </th>
         <th>
             Message Content
         </th>
       
         <th>
-            @Html.DisplayNameFor(model => model.user.email)
+            Message Writer
+        </th>
+        <th>
+            Reply Info
+        </th>
+        <th>
+            Actions
         </th>
         <th></th>
     </tr>
@@ -24,19 +35,33 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @Html.DisplayFor(modelItem => item.MID )
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.user.email)
+            @Html.DisplayFor(modelItem => item.Descreption)
         </td>
         <td>
-            @if (item.UID == Convert.ToInt32(Session["User ID"])) // Only The user who wrote the message can delete and edit it
+            @Html.DisplayFor(modelItem => item.user.UserName)
+        </td>
+        <td>
+            @if (item.PID != null)
             {
-                @Html.ActionLink("Delete |", "Delete", new { id = item.MID}) 
-                
-                @Html.ActionLink(" Edit", "Edit", new { id = item.MID})
-            } |
-            @Html.ActionLink("Details", "Details", new { id = item.MID })|
+                <p> This Message is Reply To message Number <a href="@Url.Action("Details", "messages", new { id = item.PID })">@item.PID</a> </p>
+            }
+            </td>
+        <td>
+            @if (item.User_ID == Convert.ToInt32(Session["User ID"])) // Only The user who wrote the message can delete and edit it.
+            {
+                <a href="@Url.Action("Delete", "messages", new { id = item.MID})" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                <a href="@Url.Action("Edit", "messages", new { id = item.MID})" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+
+            }
+            @if (Session["UserName"] != null) //User Can't Add reply without Login.
+            {
+                <a href="@Url.Action("AddReply", "messages", new { id = item.MID })" class="btn btn-warning"><span class="glyphicon glyphicon-share-alt"></span> Add Repley</a>
+            }
+            <a href="@Url.Action("Details", "messages", new { id = item.MID })" class="btn btn-info"><span class="glyphicon glyphicon-list-alt"></span> Details</a>
+
 
         </td>
     </tr>

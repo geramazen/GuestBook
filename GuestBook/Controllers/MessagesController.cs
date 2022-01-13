@@ -16,8 +16,8 @@ namespace GuestBook.Controllers
 
         public ActionResult Index()
         {
-            var messages = db.messages.Include(m => m.user);
-            return View(messages.ToList());
+            var Model = db.messages.ToList();
+            return View(Model);
         }
 
         public ActionResult Details(int? id)
@@ -36,23 +36,31 @@ namespace GuestBook.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.UID = new SelectList(db.users, "UID", "email");
-            return View();
+            if (Session["UserName"] != null)
+            {
+                ViewBag.UID = new SelectList(db.users, "UID", "email");
+                return View();
+            }
+            else
+            {
+                ViewBag.error = "You have to login to can Add a message";
+                return RedirectToAction("Index", "users");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MID,Description,PID,UID")] message message)
+        public ActionResult Create([Bind(Include = "Descreption")] message _message)
         {
             if (ModelState.IsValid)
             {
-                db.messages.Add(message);
+                _message.User_ID = Convert.ToInt32(Session["User ID"]);
+                db.messages.Add(_message);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UID = new SelectList(db.users, "UID", "email", message.UID);
-            return View(message);
+            return View(_message);
         }
 
         public ActionResult Edit(int? id)
@@ -66,7 +74,7 @@ namespace GuestBook.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UID = new SelectList(db.users, "UID", "email", message.UID);
+            ViewBag.UID = new SelectList(db.users, "UID", "email", message.User_ID);
             return View(message);
         }
 
@@ -80,7 +88,7 @@ namespace GuestBook.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UID = new SelectList(db.users, "UID", "email", message.UID);
+            ViewBag.UID = new SelectList(db.users, "UID", "email", message.User_ID);
             return View(message);
         }
 
@@ -106,6 +114,43 @@ namespace GuestBook.Controllers
             db.messages.Remove(message);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AddReply(int? id)
+        {
+            if (Session["UserName"] != null)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                message _message = db.messages.Find(id);
+                Session["MessageID"] = _message.MID; //Here Iam catch the parent message ID
+                if (_message == null)
+                {
+                    return HttpNotFound();
+                }
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "users");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddReply([Bind(Include = "Descreption")] message _message)
+        {
+            if (ModelState.IsValid)
+            {
+                _message.User_ID = Convert.ToInt32(Session["User ID"]);
+                _message.PID = Convert.ToInt32(Session["MessageID"]);
+                db.messages.Add(_message);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(_message);
         }
 
     }

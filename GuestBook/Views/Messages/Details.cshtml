@@ -4,39 +4,30 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Message Details</h2>
 
 <div>
-    <h4>message</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+           Descreption:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Descreption)
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.PID)
+           Message Writer:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.user.email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.user.email)
+            @Html.DisplayFor(model => model.user.UserName)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MID }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index","Messages")" class="btn btn-info"> <span class="glyphicon glyphicon-chevron-left"></span> Back To List</a>
 </p>

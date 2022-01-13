@@ -15,9 +15,9 @@ namespace GuestBook.Models
     public partial class message
     {
         public int MID { get; set; }
-        public string Description { get; set; }
+        public string Descreption { get; set; }
         public Nullable<int> PID { get; set; }
-        public int UID { get; set; }
+        public Nullable<int> User_ID { get; set; }
     
         public virtual user user { get; set; }
     }

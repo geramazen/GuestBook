@@ -26,7 +26,6 @@ namespace GuestBook.Models
         }
     
         public virtual DbSet<message> messages { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<user> users { get; set; }
     }
 }
