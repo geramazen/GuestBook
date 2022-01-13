@@ -31,7 +31,7 @@
                 @if (Session["UserName"] == null)
                 {
                     <li><a href="@Url.Action("Login","users")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    <li>@Html.ActionLink("Registar", "Registar", "users")</li>
+                    <li>@Html.ActionLink("Register", "Registar", "users")</li>
 
                 }
                 @if (Session["UserName"] != null)

@@ -31,7 +31,8 @@ namespace GuestBook.Controllers
             {
                 db.users.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("index");
+                Session["UserName"]=user.UserName;
+                return RedirectToAction("index","Messages");
             }
             return View(user);
         }
@@ -63,6 +64,7 @@ namespace GuestBook.Controllers
         public ActionResult Logout()
         {
             Session["UserName"] = null;
+            Session["User ID"] = null;
             return RedirectToAction("Login");
         }
        
