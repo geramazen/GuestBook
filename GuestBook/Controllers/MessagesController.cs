@@ -70,25 +70,26 @@ namespace GuestBook.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             message message = db.messages.Find(id);
+            Session["MessageID"] = message.MID; //This session to catch the message ID and can pass it
             if (message == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UID = new SelectList(db.users, "UID", "email", message.User_ID);
             return View(message);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MID,Description,PID,UID")] message message)
+        public ActionResult Edit([Bind(Include = "Descreption")] message message)
         {
             if (ModelState.IsValid)
             {
+                message.User_ID = Convert.ToInt32(Session["User ID"]);
+                message.MID = Convert.ToInt32(Session["MessageID"]);
                 db.Entry(message).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UID = new SelectList(db.users, "UID", "email", message.User_ID);
             return View(message);
         }
 
