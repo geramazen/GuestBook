@@ -39,6 +39,7 @@ This is an example of how you may give instructions on setting up your project l
   ```
   
  ### 2. Pull The code and open it on your visual studio
+ ``` git pull geramazen/GuestBook```
  ### 3. connect the database with the code
  Do this after change the **source** server in the connection string with your server name.
  ```
